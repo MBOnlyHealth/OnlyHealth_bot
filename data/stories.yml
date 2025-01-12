@@ -1,0 +1,82 @@
+version: "3.1"
+
+stories:
+  - story: Greet the user
+    steps:
+      - intent: greet
+      - action: utter_greet
+
+  - story: Say goodbye
+    steps:
+      - intent: goodbye
+      - action: utter_goodbye
+
+  - story: Handle fallback
+    steps:
+      - intent: nlu_fallback
+      - action: action_openai_response
+
+  - story: Ask about hemoglobin level
+    steps:
+      - intent: ask_hemoglobin_level
+      - action: action_openai_response
+
+  - story: Ask about white blood cell count
+    steps:
+      - intent: ask_white_blood_cells
+      - action: action_openai_response
+
+  - story: Ask about cholesterol levels
+    steps:
+      - intent: ask_cholesterol
+      - action: action_openai_response
+
+  - story: Ask about anemia symptoms
+    steps:
+      - intent: ask_anemia_symptoms
+      - action: action_openai_response
+
+  - story: Ask about blood sugar levels
+    steps:
+      - intent: ask_blood_sugar
+      - action: action_openai_response
+
+  - story: General health advice
+    steps:
+      - intent: general_health_advice
+      - action: action_openai_response
+
+  - story: Ask about disease symptoms
+    steps:
+      - intent: ask_disease_symptoms
+      - action: action_openai_response
+
+  - story: Ask about health risks
+    steps:
+      - intent: ask_health_risks
+      - action: action_openai_response
+
+  - story: Schedule an appointment
+    steps:
+      - intent: schedule_appointment
+      - action: action_send_calendly_link
+
+  - story: Inquire about OnlyHealth services
+    steps:
+      - intent: ask_services
+      - action: action_openai_response
+
+  - story: Ask about prices and provide guidance
+    steps:
+      - intent: ask_prices
+      - action: action_send_calendly_with_guidance
+
+  - story: Ask about ECG
+    steps:
+      - intent: ask_ecg
+      - action: action_openai_response
+
+  - story: Provide package information from JSON
+    steps:
+      - intent: ask_about_package_information
+      - action: action_send_package_details

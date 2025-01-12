@@ -1,0 +1,151 @@
+version: "3.1"
+nlu:
+- intent: greet
+  examples: |
+    - hello
+    - hi
+    - hey
+    - how are you?
+    - good morning
+    - good evening
+
+- intent: goodbye
+  examples: |
+    - goodbye
+    - bye
+    - see you later
+    - thank you
+    - talk to you soon
+
+- intent: ask_services
+  examples: |
+    - What services do you offer?
+    - Can you tell me about the health packages?
+    - What tests are included in your packages?
+    - What does OnlyHealth specialize in?
+    - Tell me about your health services
+    - What packages are available?
+    - What is included in your health services?
+
+- intent: ask_prices
+  examples: |
+    - What are the prices of the health packages?
+    - How much is the Dad's Health Pit Stop?
+    - What is the cost for Make Sure Moms Well!?
+    - Can you tell me the price of the Enhanced Athletes Pit Stop?
+    - How much is Busy Hustler's Tune-Up?
+    - What is the price for Immune Fit for Students?
+    - How much does a package cost?
+    - Can you tell me the pricing details?
+
+- intent: ask_ecg
+  examples: |
+    - What is ECG?
+    - Can you explain ECG to me?
+    - What is the purpose of ECG?
+    - Do you offer ECG tests?
+    - What is included in the ECG test?
+
+- intent: ask_about_package_information
+  examples: |
+    - Tell me about [Dad's Health Pit Stop](package_name)
+    - What is included in the [Performance Boost](package_name) package?
+    - Can you give me details about the [Enhanced Athletes Pit Stop](package_name)?
+    - What tests are in the [Age Strong Check-Up](package_name)?
+    - Explain the [Immune Fit for Students](package_name) package
+    - What does [Make Sure Moms Well!](package_name) include?
+    - What is the [Enhanced Athletes Pit Stop](package_name) all about?
+    - Can I see details about [Dad's Health Pit Stop](package_name)?
+    - Show me an image of the [Performance Boost](package_name) package.
+    - Do you have a picture for the [Enhanced Athletes Pit Stop](package_name)?
+    - Provide the package image for [Immune Fit for Students](package_name).
+    - I want to see the [Age Strong Check-Up](package_name) package details.
+    - Tell me about [Dad’s Health Pit Stop](package_name).
+    - What does the [Busy Hustler's Tune-Up](package_name) include?
+    - Can you explain [Busy Hustler's Tune-Up](package_name)?
+    - Tell me about the [Busy Hustler's Tune-Up](package_name).
+    - Show me the [Busy Hustler's Tune-Up](package_name) package details.
+    - Tell me about [Dad's Health Pit Stop](package_name)
+    - What is included in [Dad's Health Pit Stop](package_name)?
+    - Explain [Dad's Health Pit Stop](package_name).
+    - Show me [Dad's Health Pit Stop](package_name).
+    - Do you have an image of [Dad's Health Pit Stop](package_name)?
+    - [Dad's Health Pit Stop](package_name)
+
+- intent: ask_hemoglobin_level
+  examples: |
+    - What is a normal hemoglobin level?
+    - Can you tell me the normal range for hemoglobin?
+    - How much hemoglobin should be in a healthy person?
+    - What is a low hemoglobin count?
+    - How does a low hemoglobin count affect my body?
+    - What are the symptoms of low hemoglobin?
+
+- intent: ask_white_blood_cells
+  examples: |
+    - What does a high white blood cell count mean?
+    - What could cause an elevated WBC count?
+    - How can I lower my white blood cell count?
+    - Can stress affect white blood cells?
+    - What causes a low WBC count?
+
+- intent: ask_cholesterol
+  examples: |
+    - What is a normal cholesterol level?
+    - How do I lower my cholesterol naturally?
+    - What are the symptoms of high cholesterol?
+    - Can you explain cholesterol tests?
+    - What is the difference between LDL and HDL cholesterol?
+
+- intent: ask_anemia_symptoms
+  examples: |
+    - What are the symptoms of anemia?
+    - How do I know if I have anemia?
+    - What should I do if I have low iron levels?
+    - What foods can help me treat anemia?
+    - How can I prevent anemia?
+
+- intent: ask_blood_sugar
+  examples: |
+    - What is a normal blood sugar level?
+    - What could a high blood sugar level indicate?
+    - What is diabetes and how do I check for it?
+    - Can low blood sugar be dangerous?
+    - What are the signs of diabetes?
+
+- intent: general_health_advice
+  examples: |
+    - How can I improve my overall health?
+    - What should I eat to maintain good health?
+    - How often should I exercise for good health?
+    - Can you give me tips for better sleep?
+    - What are the best foods for heart health?
+
+- intent: ask_disease_symptoms
+  examples: |
+    - What are the signs of high blood pressure?
+    - What are the early signs of heart disease?
+    - How can I know if I have kidney problems?
+    - What are common symptoms of vitamin deficiency?
+
+- intent: ask_health_risks
+  examples: |
+    - What are the health risks of smoking?
+    - How does alcohol affect my health?
+    - What are the long-term effects of stress on health?
+    - Can lack of sleep impact my health?
+
+- intent: ask_for_clarification
+  examples: |
+    - Can you clarify what you mean?
+    - Could you explain that in more detail?
+    - I’m not sure I understand. Could you help me?
+
+- intent: schedule_appointment
+  examples: |
+    - I want to book an appointment
+    - How can I schedule a blood test?
+    - Can I book a test?
+    - I need to make an appointment
+    - How can I schedule a visit?
+    - How can I schedule my blood test?

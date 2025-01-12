@@ -1,0 +1,72 @@
+version: '3.1'
+intents:
+- ask_about_package_information
+- ask_anemia_symptoms
+- ask_blood_sugar
+- ask_cholesterol
+- ask_disease_symptoms
+- ask_ecg
+- ask_for_clarification
+- ask_health_risks
+- ask_hemoglobin_level
+- ask_prices
+- ask_services
+- ask_white_blood_cells
+- fallback
+- general_health_advice
+- goodbye
+- greet
+- nlu_fallback
+- schedule_appointment
+actions:
+- action_send_package_details
+- action_openai_response
+- action_send_calendly_link
+- action_send_calendly_with_guidance
+slots:
+  context:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_text
+  package_name:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_text
+      entity: package_name
+responses:
+  utter_greet:
+  - text: 👋 Welcome, I'm OnlyHealth's dedicated AI! We specialize in 🩸 blood tests conducted at your home in Dubai. How can we assist you today?
+  utter_goodbye:
+  - text: 👋 Thank you for choosing OnlyHealth. Stay healthy and take care!
+  utter_default:
+  - text: I’m sorry, I didn’t catch that. Let me check for you.
+  utter_schedule_appointment:
+  - text: |
+      You can book an appointment with us by visiting the following link:
+      (https://calendly.com/onlyhealth-booking).
+      Our team will come directly to your home to conduct the blood test. Currently, we only operate in Dubai.
+  utter_services:
+  - text: |
+      At OnlyHealth, we offer the following health packages:
+      - Dad's Health Pit Stop
+      - Make Sure Moms Well!
+      - Performance Boost
+      - Age Strong Check-Up
+      - The Enhanced Athletes Pit Stop
+      - Busy Hustler's Tune-Up
+      - Immune Fit for Students
+      After your blood test, you will receive general recommendations based on the results. Let me know if you'd like more details about any package.
+  utter_prices:
+  - text: |
+      Pricing depends on the package or test you choose. For the most accurate and up-to-date pricing information, please visit:
+      [Schedule an Appointment](https://calendly.com/onlyhealth-booking).
+  utter_ecg:
+  - text: |
+      ECG stands for Electrocardiogram, a test that measures the electrical activity of your heart to identify any abnormalities. It is non-invasive and widely used to assess heart health.
+entities:
+- package_name
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

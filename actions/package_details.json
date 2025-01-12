@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Make Sure Mom's Well!",
+    "description": "A specialized health package tailored to moms to ensure comprehensive well-being.",
+    "pdf_url": "https://raw.githubusercontent.com/MBOnlyHealth/Make-Sure-Mom-s-Well-/main/Make%20Sure%20Mom%E2%80%99s%20Well%21.pdf"
+  },
+  {
+    "name": "Dad's Health Pit Stop",
+    "description": "A comprehensive health package designed to keep dads fit and energized.",
+    "pdf_url": "https://raw.githubusercontent.com/MBOnlyHealth/Dad-s-Health-Pit-Stop/main/Dad%27s%20Health%20Pit%20Stop.pdf"
+  },
+  {
+    "name": "Performance Boost",
+    "description": "Designed for athletes and high performers to track and enhance their performance.",
+    "pdf_url": "https://raw.githubusercontent.com/MBOnlyHealth/Performance-Boost/main/Performance%20Boost.pdf"
+  },
+  {
+    "name": "Busy Hustler's Tune-Up",
+    "description": "A tailored health package for busy individuals to maintain optimal health while managing a tight schedule.",
+    "pdf_url": "https://raw.githubusercontent.com/MBOnlyHealth/Busy-Hustler-s-Tune-Up/main/Busy%20Hustler's%20Tune-Up.pdf"
+  },
+  {
+    "name": "Immune Fit for Students",
+    "description": "A comprehensive package to ensure students maintain a healthy immune system during their academic journey.",
+    "pdf_url": "https://raw.githubusercontent.com/MBOnlyHealth/Immune-Fit-for-Students-/main/Immune%20Fit%20for%20Students.pdf"
+  }
+]

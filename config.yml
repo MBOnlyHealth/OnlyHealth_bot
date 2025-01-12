@@ -1,0 +1,41 @@
+version: "3.1"
+
+language: "en"
+
+# NLU pipeline for language understanding
+pipeline:
+- name: WhitespaceTokenizer
+- name: RegexFeaturizer
+- name: LexicalSyntacticFeaturizer
+- name: CountVectorsFeaturizer
+- name: CountVectorsFeaturizer
+  analyzer: "char_wb"
+  min_ngram: 1
+  max_ngram: 4
+- name: DIETClassifier
+  epochs: 100
+- name: EntitySynonymMapper
+- name: ResponseSelector
+  epochs: 100
+- name: FallbackClassifier
+  threshold: 0.4    # Adjust to change how sensitive the fallback is
+  ambiguity_threshold: 0.1
+
+# Policies for handling conversation flow
+policies:
+- name: RulePolicy
+  core_fallback_action_name: "action_default_fallback"
+  core_fallback_threshold: 0.3
+  enable_fallback_prediction: true
+- name: MemoizationPolicy
+  max_history: 5
+- name: TEDPolicy
+  max_history: 5
+  epochs: 200
+
+# Fallback actions
+fallback_actions:
+  nlu_fallback: "action_openai_response"
+  core_fallback: "action_default_fallback"
+  default_fallback_response: "utter_default"
+assistant_id: 20250110-184955-recursive-cockpit

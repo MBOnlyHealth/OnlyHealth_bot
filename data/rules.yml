@@ -1,0 +1,82 @@
+version: "3.1"
+
+rules:
+  - rule: Greet
+    steps:
+      - intent: greet
+      - action: utter_greet
+
+  - rule: Goodbye
+    steps:
+      - intent: goodbye
+      - action: utter_goodbye
+
+  - rule: Handle fallback
+    steps:
+      - intent: nlu_fallback
+      - action: action_openai_response
+
+  - rule: Ask about hemoglobin level
+    steps:
+      - intent: ask_hemoglobin_level
+      - action: action_openai_response
+
+  - rule: Ask about white blood cell count
+    steps:
+      - intent: ask_white_blood_cells
+      - action: action_openai_response
+
+  - rule: Ask about cholesterol levels
+    steps:
+      - intent: ask_cholesterol
+      - action: action_openai_response
+
+  - rule: Ask about anemia symptoms
+    steps:
+      - intent: ask_anemia_symptoms
+      - action: action_openai_response
+
+  - rule: Ask about blood sugar levels
+    steps:
+      - intent: ask_blood_sugar
+      - action: action_openai_response
+
+  - rule: General health advice
+    steps:
+      - intent: general_health_advice
+      - action: action_openai_response
+
+  - rule: Ask about disease symptoms
+    steps:
+      - intent: ask_disease_symptoms
+      - action: action_openai_response
+
+  - rule: Ask about health risks
+    steps:
+      - intent: ask_health_risks
+      - action: action_openai_response
+
+  - rule: Schedule an appointment
+    steps:
+      - intent: schedule_appointment
+      - action: action_send_calendly_link
+
+  - rule: Ask about OnlyHealth services
+    steps:
+      - intent: ask_services
+      - action: action_openai_response
+
+  - rule: Ask about ECG
+    steps:
+      - intent: ask_ecg
+      - action: action_openai_response
+
+  - rule: Ask about prices and provide guidance
+    steps:
+      - intent: ask_prices
+      - action: action_send_calendly_with_guidance
+
+  - rule: Provide package information and image via JSON
+    steps:
+      - intent: ask_about_package_information
+      - action: action_send_package_details

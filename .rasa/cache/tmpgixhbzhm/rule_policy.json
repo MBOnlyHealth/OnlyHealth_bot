@@ -1,0 +1,46 @@
+{
+  "lookup": {
+    "rules": {
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_hemoglobin_level\"}}]": "action_openai_response",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_hemoglobin_level\"}}, {\"prev_action\": {\"action_name\": \"action_openai_response\"}, \"user\": {\"intent\": \"ask_hemoglobin_level\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_cholesterol\"}}]": "action_openai_response",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_cholesterol\"}}, {\"prev_action\": {\"action_name\": \"action_openai_response\"}, \"user\": {\"intent\": \"ask_cholesterol\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_white_blood_cells\"}}]": "action_openai_response",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_white_blood_cells\"}}, {\"prev_action\": {\"action_name\": \"action_openai_response\"}, \"user\": {\"intent\": \"ask_white_blood_cells\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"general_health_advice\"}}]": "action_openai_response",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"general_health_advice\"}}, {\"prev_action\": {\"action_name\": \"action_openai_response\"}, \"user\": {\"intent\": \"general_health_advice\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_blood_sugar\"}}]": "action_openai_response",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_blood_sugar\"}}, {\"prev_action\": {\"action_name\": \"action_openai_response\"}, \"user\": {\"intent\": \"ask_blood_sugar\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"goodbye\"}}]": "utter_goodbye",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"goodbye\"}}, {\"prev_action\": {\"action_name\": \"utter_goodbye\"}, \"user\": {\"intent\": \"goodbye\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_services\"}}]": "action_openai_response",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_services\"}}, {\"prev_action\": {\"action_name\": \"action_openai_response\"}, \"user\": {\"intent\": \"ask_services\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_prices\"}}]": "action_send_calendly_with_guidance",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_prices\"}}, {\"prev_action\": {\"action_name\": \"action_send_calendly_with_guidance\"}, \"user\": {\"intent\": \"ask_prices\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_anemia_symptoms\"}}]": "action_openai_response",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_anemia_symptoms\"}}, {\"prev_action\": {\"action_name\": \"action_openai_response\"}, \"user\": {\"intent\": \"ask_anemia_symptoms\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"greet\"}}]": "utter_greet",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"greet\"}}, {\"prev_action\": {\"action_name\": \"utter_greet\"}, \"user\": {\"intent\": \"greet\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_health_risks\"}}]": "action_openai_response",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_health_risks\"}}, {\"prev_action\": {\"action_name\": \"action_openai_response\"}, \"user\": {\"intent\": \"ask_health_risks\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_ecg\"}}]": "action_openai_response",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_ecg\"}}, {\"prev_action\": {\"action_name\": \"action_openai_response\"}, \"user\": {\"intent\": \"ask_ecg\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"nlu_fallback\"}}]": "action_openai_response",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"nlu_fallback\"}}, {\"prev_action\": {\"action_name\": \"action_openai_response\"}, \"user\": {\"intent\": \"nlu_fallback\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"schedule_appointment\"}}]": "action_send_calendly_link",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"schedule_appointment\"}}, {\"prev_action\": {\"action_name\": \"action_send_calendly_link\"}, \"user\": {\"intent\": \"schedule_appointment\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_disease_symptoms\"}}]": "action_openai_response",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_disease_symptoms\"}}, {\"prev_action\": {\"action_name\": \"action_openai_response\"}, \"user\": {\"intent\": \"ask_disease_symptoms\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_about_package_information\"}}]": "action_send_package_details",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_about_package_information\"}}, {\"prev_action\": {\"action_name\": \"action_send_package_details\"}, \"user\": {\"intent\": \"ask_about_package_information\"}}]": "action_listen"
+    },
+    "rule_only_slots": [],
+    "rule_only_loops": [],
+    "rules_for_loop_unhappy_path": {},
+    "rules_not_in_stories": [
+      "predicting default action with intent restart",
+      "predicting default action with intent back",
+      "predicting default action with intent session_start"
+    ]
+  }
+}
