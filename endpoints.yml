@@ -1,2 +1,2 @@
 action_endpoint:
-  url: "http://blood-test-rasa-try1:5055/webhook"
+  url: "http://blood_test_actions_try1:5055/webhook"
