@@ -184,7 +184,7 @@ class ActionOpenAIResponse(Action):
                         "Avoid unnecessary details, don't list all packages unless asked specifically, and focus on "
                         "providing essential information. Guide clients regarding blood tests, available packages, "
                         "ECG service, and booking procedures. Always keep your responses concise and preferable but "
-                        "not limited to short 2-3 sentences. Include the booking link only when asked: "
+                        "not limited to 2-3 sentences. Include the booking link only when asked: "
                         "https://calendly.com/onlyhealth-booking for appointments."
                     ),
                 },
@@ -194,7 +194,7 @@ class ActionOpenAIResponse(Action):
             openai_response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=messages,
-                max_tokens=50
+                max_tokens=100
             )
 
             bot_reply = openai_response.choices[0].message.content.strip()
@@ -202,13 +202,20 @@ class ActionOpenAIResponse(Action):
             print(f"Debug - Sending via Twilio: To: {user_phone_number}, Message: {bot_reply}")
 
             if user_phone_number.startswith("whatsapp:+"):
+                # Fix: ensure from_number also has "whatsapp:" if needed
+                if not from_number.startswith("whatsapp:"):
+                    from_whatsapp = from_number.lstrip("+")
+                    from_whatsapp = f"whatsapp:+{from_whatsapp}"
+                else:
+                    from_whatsapp = from_number
+
                 twilio_client = Client(account_sid, auth_token)
                 twilio_client.messages.create(
                     body=bot_reply,
-                    from_=from_number,
+                    from_=from_whatsapp,
                     to=user_phone_number
                 )
-                # Removed the "✅ Message sent successfully!" dispatch
+                # (Removed the "✅ Message sent successfully!" dispatch)
             else:
                 dispatcher.utter_message(
                     text="You are using a non-WhatsApp platform (likely Rasa shell), so I will not send a Twilio message."
