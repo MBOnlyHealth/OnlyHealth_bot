@@ -7,9 +7,9 @@ import json
 import time
 from openai import OpenAI
 from twilio.rest import Client  # Added Twilio client for messaging
+from dotenv import load_dotenv  # Import dotenv to load variables from .env
 
 # Load environment variables from .env file
-from dotenv import load_dotenv  # Import dotenv to load variables from .env
 load_dotenv()
 
 # Get OpenAI API key and Twilio credentials from environment variables
@@ -44,10 +44,6 @@ class ActionSendPackageDetails(Action):
             package_name = tracker.get_slot("package_name") or ""
             user_message = tracker.latest_message.get("text", "").lower()
 
-            # Debugging raw slot value and user message
-            dispatcher.utter_message(text=f"Debug: Raw slot value - {package_name}")
-            dispatcher.utter_message(text=f"Debug: User message - {user_message}")
-
             # Normalize package_name (replace apostrophes, remove "package" suffix, and unnecessary phrases)
             if package_name:
                 package_name = package_name.replace("’", "").replace("'", "").strip()
@@ -64,28 +60,19 @@ class ActionSendPackageDetails(Action):
                 pkg["name"].replace("’", "").replace("'", "").lower(): pkg for pkg in package_details
             }
 
-            # Debugging normalized package names
-            dispatcher.utter_message(text=f"Debug: Normalized package names - {list(normalized_packages.keys())}")
-
             # Use fuzzy matching to find the best match
             normalized_keys = list(normalized_packages.keys())
             best_match, match_score = process.extractOne(package_name.lower(), normalized_keys)
 
-            # Debugging best match and score
-            dispatcher.utter_message(text=f"Debug: Best match - {best_match}, Score - {match_score}")
-
             # Respond based on the best match if the score is acceptable
             if match_score >= 40:  # Accept matches with a high similarity score
                 matched_package = normalized_packages[best_match]
-
-                # Check if PDF URL exists
                 pdf_url = matched_package.get("pdf_url")
                 if pdf_url:
                     dispatcher.utter_message(
                         text=f"Here is the detailed document for {matched_package['name']}: {matched_package['description']}\n\n📄 [View PDF Document]({pdf_url})"
                     )
                 else:
-                    # Fallback to sending the description if no PDF exists
                     dispatcher.utter_message(
                         text=f"Here are the details for {matched_package['name']}: {matched_package['description']}"
                     )
@@ -181,15 +168,23 @@ class ActionOpenAIResponse(Action):
 
             bot_reply = openai_response.choices[0].message.content.strip()
 
-            # Send the bot reply via Twilio API
-            twilio_client = Client(account_sid, auth_token)
-            twilio_client.messages.create(
-                body=bot_reply,
-                from_=from_number,
-                to=user_phone_number
-            )
+            # Debug the user number and reply before sending
+            print(f"Debug - Sending to: {user_phone_number}, Message: {bot_reply}")
 
-            dispatcher.utter_message(text="✅ Message sent successfully!")
+            if user_phone_number.startswith("whatsapp:+"):
+                # Send the bot reply via Twilio API
+                twilio_client = Client(account_sid, auth_token)
+                twilio_client.messages.create(
+                    body=bot_reply,
+                    from_=from_number,
+                    to=user_phone_number
+                )
+                dispatcher.utter_message(text="✅ Message sent successfully!")
+            else:
+                dispatcher.utter_message(
+                    text="You are using a non-WhatsApp platform (likely Rasa shell), so I will not send a Twilio message."
+                )
+
         except Exception as e:
             dispatcher.utter_message(text=f"Error: {str(e)} - OnlyHealth's AI could not process your request.")
             print(f"Detailed OpenAI Error: {e}")
