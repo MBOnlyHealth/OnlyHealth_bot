@@ -63,16 +63,21 @@ class ActionSendPackageDetails(Action):
                         break
 
             normalized_packages = {
-                pkg["name"].replace("’", "").replace("'", "").lower(): pkg for pkg in package_details
+                pkg["name"].replace("’", "").replace("'", "").lower(): pkg
+                for pkg in package_details
             }
             normalized_keys = list(normalized_packages.keys())
             best_match, match_score = process.extractOne(package_name.lower(), normalized_keys)
 
-            print(f"Debug - Best Match: {best_match}, Score: {match_score}")
+            # Additional debug prints
+            print(f"Debug - Best Match: {best_match}, Score: {match_score}")  # Fuzzy match result
+            print(f"Debug - Package Slot: {package_name}")
+            print(f"Debug - User Message: {user_message}")
 
             if match_score >= 40:
                 matched_package = normalized_packages[best_match]
                 pdf_url = matched_package.get("pdf_url")
+
                 if pdf_url:
                     dispatcher.utter_message(
                         text=(
@@ -91,9 +96,18 @@ class ActionSendPackageDetails(Action):
                 dispatcher.utter_message(
                     text="Sorry, I couldn't find details for the specified package. Please try rephrasing your query."
                 )
+
         except Exception as e:
-            dispatcher.utter_message(text=f"Error: {str(e)} - There was an issue retrieving package details.")
-            print(f"Detailed Package Error: {e}")
+            dispatcher.utter_message(
+                text=f"Error: {str(e)} - There was an issue retrieving package details."
+            )
+            print(f"Detailed Package Error: {e}")  # Logs detailed error for debugging
+
+            # In case of error, also show the fallback message:
+            dispatcher.utter_message(
+                text="Sorry, I couldn't find details for the specified package. Please try rephrasing your query."
+            )
+
         return []
 
 
@@ -126,10 +140,8 @@ class ActionSendCalendlyWithGuidance(Action):
         time.sleep(10)
         dispatcher.utter_message(
             text=(
-                "Our packages are tailored to your needs. For accurate pricing and package details, "
-                "please visit our booking page: https://calendly.com/onlyhealth-booking. "
-                "We provide blood tests at your home in Dubai and include general recommendations "
-                "with your results, sent directly via WhatsApp."
+                "Our packages are tailored to your needs. For accurate pricing and package details, please visit our booking page: https://calendly.com/onlyhealth-booking. "
+                "We provide blood tests at your home in Dubai and include general recommendations with your results, sent directly via WhatsApp."
             )
         )
         return []
@@ -176,16 +188,12 @@ class ActionOpenAIResponse(Action):
                 {
                     "role": "system",
                     "content": (
-                        "You are a dedicated OnlyHealth AI, providing blood test services, ECG, and generalized "
-                        "recommendations based on results, in Dubai. "
-                        "Recommend packages only when asked based on client needs but only use the predefined packages "
-                        "(Dad's Health Pit Stop, Make Sure Moms Well!, Performance Boost, Age Strong Check-Up, "
-                        "The Enhanced Athletes Pit Stop, Busy Hustler's Tune-Up, Immune Fit for Students). "
-                        "Avoid unnecessary details, don't list all packages unless asked specifically, and focus on "
-                        "providing essential information. Guide clients regarding blood tests, available packages, "
-                        "ECG service, and booking procedures. Always keep your responses concise and preferable but "
-                        "not limited to 2-3 sentences. Include the booking link only when asked: "
-                        "https://calendly.com/onlyhealth-booking for appointments."
+                        "You are a dedicated OnlyHealth AI, providing blood test services, ECG, and generalized recommendations based on results, in Dubai. "
+                        "Recommend packages only when asked based on client needs but only use the predefined packages: (Dad's Health Pit Stop, Make Sure Moms Well!, Performance Boost, Age Strong Check-Up, The Enhanced Athletes Pit Stop, Busy Hustler's Tune-Up, Immune Fit for Students). "
+                        "Avoid unnecessary details, don't list all packages unless asked specifically, and focus on providing essential information. "
+                        "Guide clients regarding blood tests, available packages, ECG service, and booking procedures. " 
+                        "Always keep your responses concise and preferable preferable but not limited to short 2-3 sentences. "
+                        "Include the booking link only when asked: https://calendly.com/onlyhealth-booking for appointments."
                     ),
                 },
                 {"role": "user", "content": user_message},
@@ -194,7 +202,7 @@ class ActionOpenAIResponse(Action):
             openai_response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=messages,
-                max_tokens=100
+                max_tokens=50
             )
 
             bot_reply = openai_response.choices[0].message.content.strip()
@@ -202,7 +210,6 @@ class ActionOpenAIResponse(Action):
             print(f"Debug - Sending via Twilio: To: {user_phone_number}, Message: {bot_reply}")
 
             if user_phone_number.startswith("whatsapp:+"):
-                # Fix: ensure from_number also has "whatsapp:" if needed
                 if not from_number.startswith("whatsapp:"):
                     from_whatsapp = from_number.lstrip("+")
                     from_whatsapp = f"whatsapp:+{from_whatsapp}"
