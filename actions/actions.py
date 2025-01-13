@@ -24,8 +24,10 @@ print(f"Debug - Twilio SID: {account_sid if account_sid else 'MISSING'}")
 print(f"Debug - Twilio Auth Token: {'***' if auth_token else 'MISSING'}")
 print(f"Debug - Twilio From Number: {from_number if from_number else 'MISSING'}")
 
-if api_key is None:
+if not api_key:
     raise ValueError("OpenAI API key not found. Please add OPENAI_API_KEY to your .env file.")
+if not all([account_sid, auth_token, from_number]):
+    raise ValueError("Twilio credentials are missing. Please check your .env file or Render settings.")
 
 # Initialize OpenAI client
 client = OpenAI(api_key=api_key)
