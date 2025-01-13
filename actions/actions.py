@@ -6,19 +6,24 @@ import os
 import json
 import time
 from openai import OpenAI
-from dotenv import load_dotenv  # Import dotenv to load variables from .env
+from twilio.rest import Client  # Added Twilio client for messaging
 
 # Load environment variables from .env file
+from dotenv import load_dotenv  # Import dotenv to load variables from .env
 load_dotenv()
 
-# Get the API key from the environment variable
+# Get OpenAI API key and Twilio credentials from environment variables
 api_key = os.getenv("OPENAI_API_KEY")
+account_sid = os.getenv("TWILIO_ACCOUNT_SID")  # Twilio SID
+auth_token = os.getenv("TWILIO_AUTH_TOKEN")  # Twilio Auth Token
+from_number = os.getenv("TWILIO_FROM_NUMBER")  # Twilio 'from' number
 
 if api_key is None:
     raise ValueError("OpenAI API key not found. Please add OPENAI_API_KEY to your .env file.")
 
 # Initialize OpenAI client
 client = OpenAI(api_key=api_key)
+
 
 class ActionSendPackageDetails(Action):
     def name(self) -> Text:
@@ -133,11 +138,14 @@ class ActionOpenAIResponse(Action):
         return "action_openai_response"
 
     def run(
-        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
+        self, dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any]
     ) -> List[Dict[Text, Any]]:
-        user_message = tracker.latest_message.get("text")
 
-        # Handle predefined responses
+        user_message = tracker.latest_message.get("text")
+        user_phone_number = tracker.sender_id  # Get sender's WhatsApp number
+
         if user_message.lower() in ["hello", "hi", "hey", "how are you?"]:
             dispatcher.utter_message(
                 text="👋 Welcome, I'm OnlyHealth's dedicated AI! We specialize in 🩸 blood tests conducted at your home in Dubai. How can we assist you today?"
@@ -149,7 +157,6 @@ class ActionOpenAIResponse(Action):
             )
             return []
 
-        # Handle OpenAI API calls for other queries
         try:
             messages = [
                 {
@@ -166,17 +173,25 @@ class ActionOpenAIResponse(Action):
                 {"role": "user", "content": user_message},
             ]
 
-            response = client.chat.completions.create(
+            openai_response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=messages,
                 max_tokens=100
             )
 
-            bot_reply = response.choices[0].message.content.strip()
-            dispatcher.utter_message(text=bot_reply)
-        except Exception as e:
-            dispatcher.utter_message(
-                text=f"Error: {str(e)} - OnlyHealth's AI could not process your request."
+            bot_reply = openai_response.choices[0].message.content.strip()
+
+            # Send the bot reply via Twilio API
+            twilio_client = Client(account_sid, auth_token)
+            twilio_client.messages.create(
+                body=bot_reply,
+                from_=from_number,
+                to=user_phone_number
             )
+
+            dispatcher.utter_message(text="✅ Message sent successfully!")
+        except Exception as e:
+            dispatcher.utter_message(text=f"Error: {str(e)} - OnlyHealth's AI could not process your request.")
             print(f"Detailed OpenAI Error: {e}")
+
         return []
