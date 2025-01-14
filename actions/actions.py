@@ -119,7 +119,7 @@ class ActionSendCalendlyLink(Action):
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
     ) -> List[Dict[Text, Any]]:
         # Increased delay from 2s to 10s
-        time.sleep(10)
+        time.sleep(15)
         dispatcher.utter_message(
             text=(
                 "You can book an appointment here: https://calendly.com/onlyhealth-booking. "
@@ -137,7 +137,7 @@ class ActionSendCalendlyWithGuidance(Action):
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
     ) -> List[Dict[Text, Any]]:
         # Increased delay from 2s to 10s
-        time.sleep(10)
+        time.sleep(15)
         dispatcher.utter_message(
             text=(
                 "Our packages are tailored to your needs. For accurate pricing and package details, please visit our booking page: https://calendly.com/onlyhealth-booking. "
@@ -166,7 +166,7 @@ class ActionOpenAIResponse(Action):
         # If user has a greeting...
         if user_message.lower() in ["hello", "hi", "hey", "how are you?"]:
             # Add 10s delay for Rasa's direct response
-            time.sleep(10)
+            time.sleep(15)
             dispatcher.utter_message(
                 text=(
                     "👋 Welcome, I'm OnlyHealth's dedicated AI! We specialize in 🩸 blood tests "
@@ -177,7 +177,7 @@ class ActionOpenAIResponse(Action):
         # If user says goodbye...
         elif user_message.lower() in ["bye", "goodbye", "see you", "thank you"]:
             # Add 10s delay for Rasa's direct response
-            time.sleep(10)
+            time.sleep(15)
             dispatcher.utter_message(
                 text="👋 Thank you for choosing OnlyHealth! Stay healthy and take care. See you soon! 😊"
             )
@@ -190,10 +190,10 @@ class ActionOpenAIResponse(Action):
                     "content": (
                         "You are a dedicated OnlyHealth AI, providing blood test services, ECG, and generalized recommendations based on results, in Dubai. "
                         "Recommend packages only when asked based on client needs but only use the predefined packages: (Dad's Health Pit Stop, Make Sure Moms Well!, Performance Boost, Age Strong Check-Up, The Enhanced Athletes Pit Stop, Busy Hustler's Tune-Up, Immune Fit for Students). "
-                        "Avoid unnecessary details, don't list all packages unless asked specifically, and focus on providing essential information. "
+                        "Avoid unnecessary details, don't list all packages unless asked, and focus on providing essential information. "
                         "Guide clients regarding blood tests, available packages, ECG service, and booking procedures. " 
-                        "Always keep your responses concise and preferable preferable but not limited to short 2-3 sentences. "
-                        "Include the booking link only when asked: https://calendly.com/onlyhealth-booking for appointments."
+                        "Always keep your responses concise, you can add emojis and preferable but not limited to short 2-3 sentences. "
+                        "Include the booking link specifically when asked: https://calendly.com/onlyhealth-booking for appointments."
                     ),
                 },
                 {"role": "user", "content": user_message},
@@ -202,7 +202,7 @@ class ActionOpenAIResponse(Action):
             openai_response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=messages,
-                max_tokens=50
+                max_tokens=100
             )
 
             bot_reply = openai_response.choices[0].message.content.strip()
