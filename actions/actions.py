@@ -118,7 +118,7 @@ class ActionSendCalendlyLink(Action):
     def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
     ) -> List[Dict[Text, Any]]:
-        # Increased delay from 2s to 10s
+        # Increased delay from 2s to 15s
         time.sleep(15)
         dispatcher.utter_message(
             text=(
@@ -136,7 +136,7 @@ class ActionSendCalendlyWithGuidance(Action):
     def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
     ) -> List[Dict[Text, Any]]:
-        # Increased delay from 2s to 10s
+        # Increased delay from 2s to 15s
         time.sleep(15)
         dispatcher.utter_message(
             text=(
@@ -165,18 +165,17 @@ class ActionOpenAIResponse(Action):
 
         # If user has a greeting...
         if user_message.lower() in ["hello", "hi", "hey", "how are you?"]:
-            # Add 10s delay for Rasa's direct response
+            # Add 15s delay for Rasa's direct response
             time.sleep(15)
             dispatcher.utter_message(
                 text=(
-                    "👋 Welcome, I'm OnlyHealth's dedicated AI! We specialize in 🩸 blood tests "
-                    "conducted at your home in Dubai. How can we assist you today?"
+                    "👋 Welcome, I'm OnlyHealth's dedicated AI! We specialize in 🩸 blood tests conducted at your home in Dubai. "
                 )
             )
             return []
         # If user says goodbye...
         elif user_message.lower() in ["bye", "goodbye", "see you", "thank you"]:
-            # Add 10s delay for Rasa's direct response
+            # Add 15s delay for Rasa's direct response
             time.sleep(15)
             dispatcher.utter_message(
                 text="👋 Thank you for choosing OnlyHealth! Stay healthy and take care. See you soon! 😊"
@@ -184,16 +183,18 @@ class ActionOpenAIResponse(Action):
             return []
 
         try:
+            # Updated system prompt with new style/tone
             messages = [
                 {
                     "role": "system",
                     "content": (
-                        "You are a dedicated OnlyHealth AI, providing blood test services, ECG, and generalized recommendations based on results, in Dubai. "
-                        "Recommend packages only when asked based on client needs but only use the predefined packages: (Dad's Health Pit Stop, Make Sure Moms Well!, Performance Boost, Age Strong Check-Up, The Enhanced Athletes Pit Stop, Busy Hustler's Tune-Up, Immune Fit for Students). "
-                        "Avoid unnecessary details, don't list all packages unless asked, and focus on providing essential information. "
-                        "Guide clients regarding blood tests, available packages, ECG service, and booking procedures. " 
-                        "Always keep your responses concise, you can add emojis and preferable but not limited to short 2-3 sentences. "
-                        "Include the booking link specifically when asked: https://calendly.com/onlyhealth-booking for appointments."
+                        "You are a warm, charismatic OnlyHealth's AI assistant acting as a receptionist for OnlyHealth in Dubai. "
+                        "You handle blood tests, ECG, and only the predefined packages: Dad's Health Pit Stop, Make Sure Moms Well!, Performance Boost, "
+                        "Age Strong Check-Up, The Enhanced Athletes Pit Stop, Busy Hustler's Tune-Up, Immune Fit for Students. "
+                        "Never list all packages unless asked. Keep replies short (2-3 sentences), direct, and semi-formal with a friendly tone. "
+                        "Use emojis and light humor occasionally 🤭. "
+                        "Mention the Calendly link (https://calendly.com/onlyhealth-booking) ONLY if the user explicitly requests an appointment or booking. Otherwise, do not show it. "
+                        "Offer essential details without rambling, and maintain a professional but personable style."
                     ),
                 },
                 {"role": "user", "content": user_message},
@@ -222,7 +223,6 @@ class ActionOpenAIResponse(Action):
                     from_=from_whatsapp,
                     to=user_phone_number
                 )
-                # (Removed the "✅ Message sent successfully!" dispatch)
             else:
                 dispatcher.utter_message(
                     text="You are using a non-WhatsApp platform (likely Rasa shell), so I will not send a Twilio message."
