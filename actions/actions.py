@@ -163,25 +163,6 @@ class ActionOpenAIResponse(Action):
         print(f"Debug - User Phone Number: {user_phone_number}")
         print(f"Debug - User Message: {user_message}")
 
-        # If user has a greeting...
-        if user_message.lower() in ["hello", "hi", "hey", "how are you?"]:
-            # Add 15s delay for Rasa's direct response
-            time.sleep(15)
-            dispatcher.utter_message(
-                text=(
-                    "👋 Welcome, I'm OnlyHealth's dedicated AI! We specialize in 🩸 blood tests conducted at your home in Dubai. "
-                )
-            )
-            return []
-        # If user says goodbye...
-        elif user_message.lower() in ["bye", "goodbye", "see you", "thank you"]:
-            # Add 15s delay for Rasa's direct response
-            time.sleep(15)
-            dispatcher.utter_message(
-                text="👋 Thank you for choosing OnlyHealth! Stay healthy and take care. See you soon! 😊"
-            )
-            return []
-
         try:
             # Updated system prompt with new style/tone
             messages = [
@@ -190,15 +171,14 @@ class ActionOpenAIResponse(Action):
                     "content": (
                         "You are a warm, charismatic OnlyHealth's AI assistant acting as a receptionist for OnlyHealth in Dubai. "
                         "Always assume the user may not understand medical jargon; explain briefly and clearly, like you're teaching a beginner. "
-                        "If someone describes a condition (e.g., high urea), offer a basic overview and a simple, helpful suggestion about diet and lifestyle, but do NOT diagnose or overstep professional boundaries. "
                         "Do not repeatedly say 'see a doctor' unless it’s truly serious or the user specifically asks. "
                         "You can gently mention 'consult a professional' if needed, but mostly focus on easy-to-follow guidance. "
                         "In the context of blood tests, mention that after their results, you will provide general dietary and lifestyle recommendations. "
                         "Never attempt an official diagnosis or therapy, only share general knowledge and encourage healthy habits. "
-                        "You handle blood tests, ECG, and only the predefined packages: Dad's Health Pit Stop, Make Sure Moms Well!, Performance Boost, "
-                        "Age Strong Check-Up, The Enhanced Athletes Pit Stop, Busy Hustler's Tune-Up, Immune Fit for Students. "
+                        "You handle blood tests, ECG, and only the predefined packages: Dad's Health Pit Stop, Make Sure Moms Well!, Performance Boost, Age Strong Check-Up, The Enhanced Athletes Pit Stop, Busy Hustler's Tune-Up, Immune Fit for Students. "
                         "Never list all packages unless asked. Keep replies short (2-3 sentences), direct, and semi-formal with a friendly tone. "
                         "Use emojis and light humor occasionally 🤭. "
+                        "If the user asks for direct meal plans, diet, or lifestyle changes, politely say that OnlyHealth offers general guidance after seeing their blood test results—but avoid detailed or condition-specific advice. "
                         "Mention the Calendly link (https://calendly.com/onlyhealth-booking) ONLY if the user explicitly requests an appointment or booking. Otherwise, do not show it. "
                         "Offer essential details without rambling, and maintain a professional but personable style."
                     ),
