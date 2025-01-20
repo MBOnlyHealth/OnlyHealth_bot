@@ -32,6 +32,7 @@ if not all([account_sid, auth_token, from_number]):
 # Initialize OpenAI client
 client = OpenAI(api_key=api_key)
 
+
 class ActionSendPackageDetails(Action):
     def name(self) -> Text:
         return "action_send_package_details"
@@ -109,6 +110,7 @@ class ActionSendPackageDetails(Action):
 
         return []
 
+
 class ActionSendCalendlyLink(Action):
     def name(self) -> Text:
         return "action_send_calendly_link"
@@ -126,6 +128,7 @@ class ActionSendCalendlyLink(Action):
         )
         return []
 
+
 class ActionSendCalendlyWithGuidance(Action):
     def name(self) -> Text:
         return "action_send_calendly_with_guidance"
@@ -142,6 +145,7 @@ class ActionSendCalendlyWithGuidance(Action):
             )
         )
         return []
+
 
 class ActionOpenAIResponse(Action):
     def name(self) -> Text:
@@ -204,6 +208,10 @@ class ActionOpenAIResponse(Action):
                     body=bot_reply,
                     from_=from_whatsapp,
                     to=user_phone_number
+                )
+            else:
+                dispatcher.utter_message(
+                    text="You are using a non-WhatsApp platform (likely Rasa shell), so I will not send a Twilio message."
                 )
 
         except Exception as e:
