@@ -18,7 +18,7 @@ pipeline:
 - name: ResponseSelector
   epochs: 100
 - name: FallbackClassifier
-  threshold: 0.4    # Adjust to change how sensitive the fallback is
+  threshold: 0.3    # Adjust to change how sensitive the fallback is
   ambiguity_threshold: 0.1
 
 # Policies for handling conversation flow

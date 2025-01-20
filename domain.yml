@@ -26,7 +26,7 @@ actions:
 slots:
   context:
     type: text
-    influence_conversation: true
+    influence_conversation: false
     mappings:
     - type: from_text
   package_name:
