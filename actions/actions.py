@@ -18,12 +18,6 @@ account_sid = os.getenv("TWILIO_ACCOUNT_SID")  # Twilio SID
 auth_token = os.getenv("TWILIO_AUTH_TOKEN")    # Twilio Auth Token
 from_number = os.getenv("TWILIO_FROM_NUMBER")  # Twilio 'from' number
 
-# Debug environment variables
-print(f"Debug - OpenAI Key: {'***' if api_key else 'MISSING'}")
-print(f"Debug - Twilio SID: {account_sid if account_sid else 'MISSING'}")
-print(f"Debug - Twilio Auth Token: {'***' if auth_token else 'MISSING'}")
-print(f"Debug - Twilio From Number: {from_number if from_number else 'MISSING'}")
-
 if not api_key:
     raise ValueError("OpenAI API key not found. Please add OPENAI_API_KEY to your .env file.")
 if not all([account_sid, auth_token, from_number]):
@@ -49,9 +43,6 @@ class ActionSendPackageDetails(Action):
             package_name = tracker.get_slot("package_name") or ""
             user_message = tracker.latest_message.get("text", "").lower()
 
-            print(f"Debug - Package Slot: {package_name}")
-            print(f"Debug - User Message: {user_message}")
-
             if package_name:
                 package_name = package_name.replace("’", "").replace("'", "").strip()
                 if package_name.endswith("package"):
@@ -68,11 +59,6 @@ class ActionSendPackageDetails(Action):
             }
             normalized_keys = list(normalized_packages.keys())
             best_match, match_score = process.extractOne(package_name.lower(), normalized_keys)
-
-            # Additional debug prints
-            print(f"Debug - Best Match: {best_match}, Score: {match_score}")  # Fuzzy match result
-            print(f"Debug - Package Slot: {package_name}")
-            print(f"Debug - User Message: {user_message}")
 
             if match_score >= 40:
                 matched_package = normalized_packages[best_match]
@@ -101,12 +87,7 @@ class ActionSendPackageDetails(Action):
             dispatcher.utter_message(
                 text=f"Error: {str(e)} - There was an issue retrieving package details."
             )
-            print(f"Detailed Package Error: {e}")  # Logs detailed error for debugging
-
-            # In case of error, also show the fallback message:
-            dispatcher.utter_message(
-                text="Sorry, I couldn't find details for the specified package. Please try rephrasing your query."
-            )
+            print(f"Detailed Package Error: {e}")
 
         return []
 
@@ -118,7 +99,6 @@ class ActionSendCalendlyLink(Action):
     def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
     ) -> List[Dict[Text, Any]]:
-        # Increased delay from 2s to 15s
         time.sleep(15)
         dispatcher.utter_message(
             text=(
@@ -136,7 +116,6 @@ class ActionSendCalendlyWithGuidance(Action):
     def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
     ) -> List[Dict[Text, Any]]:
-        # Increased delay from 2s to 15s
         time.sleep(15)
         dispatcher.utter_message(
             text=(
@@ -158,30 +137,36 @@ class ActionOpenAIResponse(Action):
     ) -> List[Dict[Text, Any]]:
 
         user_message = tracker.latest_message.get("text")
-        user_phone_number = tracker.sender_id
+        intent_ranking = tracker.latest_message.get("intent_ranking", [])
+        highest_confidence = intent_ranking[0]["confidence"] if intent_ranking else 0
 
-        print(f"Debug - User Phone Number: {user_phone_number}")
+        # Threshold confidence for OpenAI fallback
+        OPENAI_FALLBACK_THRESHOLD = 0.4
+
         print(f"Debug - User Message: {user_message}")
+        print(f"Debug - Intent Confidence: {highest_confidence}")
+
+        # Use OpenAI only if Rasa's confidence is below the threshold
+        if highest_confidence >= OPENAI_FALLBACK_THRESHOLD:
+            dispatcher.utter_message(
+                text="Rasa confidently handled this intent, so OpenAI fallback is not used."
+            )
+            return []
 
         try:
-            # Updated system prompt with new style/tone
             messages = [
                 {
                     "role": "system",
                     "content": (
                         "You are a warm, charismatic OnlyHealth's AI assistant acting as a receptionist for OnlyHealth, based in Dubai. "
                         "Always assume the user may not understand medical jargon; explain briefly and clearly, like you're teaching a beginner. "
-                        "Do not repeatedly say 'see a doctor' unless it’s truly serious or the user specifically asks. "
-                        "You can gently mention 'consult a professional' if needed, but mostly focus on easy-to-follow guidance. "
                         "In the context of blood tests, mention that after their results, you will provide general dietary and lifestyle recommendations. "
                         "Never attempt an official diagnosis or therapy, only share general knowledge and encourage healthy habits. "
-                        "You handle blood tests, ECG, and only the predefined packages: Dad's Health Pit Stop, Make Sure Moms Well!, Performance Boost, Age Strong Check-Up, The Enhanced Athletes Pit Stop, Busy Hustler's Tune-Up, Immune Fit for Students. "
-                        "Never list all packages unless asked. Keep replies short (2-3 sentences), direct, and semi-formal with a friendly tone. "
                         "Use emojis and light humor occasionally 🤭. "
-                        "All the blood tests and ECG will be done at the client's house, only in Dubai. "
-                        "If the user asks for direct meal plans, diet, or lifestyle changes, politely say that OnlyHealth offers general guidance after seeing their blood test results—but avoid detailed or condition-specific advice. "
-                        "Mention the Calendly link (https://calendly.com/onlyhealth-booking) only when talking about booking a blood test and ECG. "
-                        "Offer essential details without rambling, and maintain a professional but personable style."
+                        "You handle blood tests, ECG, and predefined packages only. "
+                        "Mention the Calendly link (https://calendly.com/onlyhealth-booking) ONLY if the user explicitly requests an appointment or booking. Otherwise, just mention calendly but not the link. "
+                        "You handle blood tests, ECG, and only the predefined packages: Dad's Health Pit Stop, Make Sure Moms Well!, Performance Boost, Age Strong Check-Up, The Enhanced Athletes Pit Stop, Busy Hustler's Tune-Up, Immune Fit for Students. "
+                        "Never list all packages unless asked. Keep replies short (2-3 sentences), direct, and semi-formal with a friendly tone."
                     ),
                 },
                 {"role": "user", "content": user_message},
@@ -214,6 +199,9 @@ class ActionOpenAIResponse(Action):
                 dispatcher.utter_message(
                     text="You are using a non-WhatsApp platform (likely Rasa shell), so I will not send a Twilio message."
                 )
+
+            bot_reply = openai_response.choices[0].message.content.strip()
+            dispatcher.utter_message(text=bot_reply)
 
         except Exception as e:
             dispatcher.utter_message(
