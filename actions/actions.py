@@ -135,6 +135,11 @@ class ActionOpenAIResponse(Action):
         tracker: Tracker,
         domain: Dict[Text, Any]
     ) -> List[Dict[Text, Any]]:
+        print(f"Debug - User Phone Number: {user_phone_number}")
+        print(f"Debug - User Message: {user_message}")
+
+        print(f"Debug - User Phone Number: {user_phone_number}")
+        print(f"Debug - User Message: {user_message}")
 
         user_message = tracker.latest_message.get("text")
         intent_ranking = tracker.latest_message.get("intent_ranking", [])
@@ -199,9 +204,6 @@ class ActionOpenAIResponse(Action):
                 dispatcher.utter_message(
                     text="You are using a non-WhatsApp platform (likely Rasa shell), so I will not send a Twilio message."
                 )
-
-            bot_reply = openai_response.choices[0].message.content.strip()
-            dispatcher.utter_message(text=bot_reply)
 
         except Exception as e:
             dispatcher.utter_message(
