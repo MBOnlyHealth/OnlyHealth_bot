@@ -163,6 +163,12 @@ class ActionOpenAIResponse(Action):
         print(f"Debug - User Phone Number: {user_phone_number}")
         print(f"Debug - User Message: {user_message}")
 
+        last_message = tracker.get_slot("last_client_message")
+        print(f"Debug - Last Client Message: {last_message}")
+
+        # Save the last client message into a slot
+        events = [SlotSet("last_client_message", user_message)]
+
         try:
             # Updated system prompt with new style/tone
             messages = [
@@ -175,10 +181,10 @@ class ActionOpenAIResponse(Action):
                         "Greet the user only when he greets you, greet him with 👋 Welcome, I'm OnlyHealth's dedicated AI! We specialize in 🩸 blood tests conducted at your home in Dubai. How can we assist you today?, or similar. "
                         "Do not repeatedly say 'see a doctor' unless it’s truly serious or the user specifically asks. "
                         "You can gently mention 'consult a professional' if needed, but mostly focus on easy-to-follow guidance. "
-                        "In the context of blood tests, mention that after their results, you will provide general dietary and lifestyle recommendations. "
-                        "Never attempt an official diagnosis or therapy, only share general knowledge and encourage healthy habits. "
+                        "In the context of blood tests, mention that after their results, 3 to 4 days, you will provide general dietary and lifestyle recommendations. "
+                        "Never attempt an official diagnosis or therapy, only share general knowledge and encourage healthy habits, making jokes and always promoting OnlyHealth blood tests and ecg. "
                         "You handle blood tests, ECG, and only the predefined packages: Dad's Health Pit Stop, Make Sure Moms Well!, Performance Boost, Age Strong Check-Up, The Enhanced Athletes Pit Stop, Busy Hustler's Tune-Up, Immune Fit for Students.  "
-                        "If a user asks for details about a specific package, provide the description and include the link to view more details: "
+                        "If a user asks for details about a specific package, provide the link to view more details: "
                         "- Make Sure Mom's Well!: https://raw.githubusercontent.com/MBOnlyHealth/Make-Sure-Mom-s-Well-/main/Make%20Sure%20Mom%E2%80%99s%20Well%21.pdf "
                         "- Dad's Health Pit Stop: https://raw.githubusercontent.com/MBOnlyHealth/Dad-s-Health-Pit-Stop/main/Dad%27s%20Health%20Pit%20Stop.pdf "
                         "- Performance Boost: https://raw.githubusercontent.com/MBOnlyHealth/Performance-Boost/main/Performance%20Boost.pdf "
@@ -228,4 +234,4 @@ class ActionOpenAIResponse(Action):
             )
             print(f"Detailed OpenAI Error: {e}")
 
-        return []
+        return events

@@ -35,6 +35,9 @@ slots:
     mappings:
     - type: from_text
       entity: package_name
+    last_client_message:
+    - type: text
+    influence_conversation: false
 responses:
   utter_greet:
   - text: 👋 Welcome, I'm OnlyHealth's dedicated AI! We specialize in 🩸 blood tests conducted at your home in Dubai. How can we assist you today?
