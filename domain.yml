@@ -36,7 +36,7 @@ slots:
     - type: from_text
       entity: package_name
     last_client_message:
-    - type: text
+    type: text
     influence_conversation: false
 responses:
   utter_greet:
