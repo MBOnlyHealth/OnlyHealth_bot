@@ -28,14 +28,14 @@ slots:
     type: text
     influence_conversation: false
     mappings:
-    - type: from_text
+      - type: from_text
   package_name:
     type: text
     influence_conversation: false
     mappings:
-    - type: from_text
-      entity: package_name
-    last_client_message:
+      - type: from_text
+        entity: package_name
+  last_client_message:
     type: text
     influence_conversation: false
 responses:
