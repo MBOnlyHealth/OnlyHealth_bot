@@ -38,6 +38,8 @@ slots:
   last_client_message:
     type: text
     influence_conversation: false
+    mappings:
+      - type: from_text
 responses:
   utter_greet:
   - text: 👋 Welcome, I'm OnlyHealth's dedicated AI! We specialize in 🩸 blood tests conducted at your home in Dubai. How can we assist you today?
